@@ -2,7 +2,7 @@ const db = require('./db');
 const { prompt } = require('inquirer');
 const { printTable } = require('console-table-printer');
 
-// view all employees db
+// View all employees of db
 const viewAllEmployees = () => {
   db.query(
     `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name, role.salary, employee.manager_id FROM employee LEFT JOIN role ON employee.role_id=role.id LEFT JOIN department ON role.department_id = department.id;`,
@@ -15,7 +15,7 @@ const viewAllEmployees = () => {
     }
   );
 };
-//view department table
+// View department table of db
 const viewDepartment = () => {
   db.query('SELECT * FROM employment_db.department;', (err, data) => {
     if (err) {
@@ -25,7 +25,7 @@ const viewDepartment = () => {
     mainMenu();
   });
 };
-//view role table
+// View role table of db
 const viewRole = () => {
   db.query('SELECT * FROM employment_db.role;', (err, data) => {
     if (err) {
@@ -35,7 +35,7 @@ const viewRole = () => {
     mainMenu();
   });
 };
-//view employee table
+// View employee tableof db
 const viewEmployee = () => {
   db.query('SELECT * FROM employment_db.employee;', (err, data) => {
     if (err) {
@@ -46,7 +46,7 @@ const viewEmployee = () => {
   });
 };
 
-// Add a new Department into db
+// Add a new department row into db
 const addDepartment = () => {
   prompt({
     type: 'input',
@@ -64,7 +64,7 @@ const addDepartment = () => {
     );
   });
 };
-// Add a new role into db
+// Add a new role row into db
 const addRole = () => {
   prompt([
     {
@@ -79,12 +79,12 @@ const addRole = () => {
     },
     {
       type: 'input',
-      name: 'departmentID',
+      name: 'dptId',
       message: 'what is the department id for this new role?', // how to do it dynamically?
     },
   ]).then((answer) => {
     db.query(
-      `INSERT INTO role (title, salary, department_id) VALUES ('${answer.title}', ${answer.salary}, ${answer.departmentID});`,
+      `INSERT INTO role (title, salary, department_id) VALUES ('${answer.title}', ${answer.salary}, ${answer.dptId});`,
       (err, data) => {
         if (err) {
           console.log(err);
@@ -99,12 +99,12 @@ const addEmployee = () => {
   prompt([
     {
       type: 'input',
-      name: 'firstName',
+      name: 'fName',
       message: 'what is the first name of this new employee?',
     },
     {
       type: 'input',
-      name: 'lastName',
+      name: 'lName',
       message: 'what is the last name of this new employee?',
     },
     {
@@ -120,7 +120,7 @@ const addEmployee = () => {
   ]).then((answer) => {
     db.query(
       `INSERT INTO employee (first_name, last_name, role_id) 
-      VALUES("${answer.firstName}", "${answer.lastName}", ${answer.roleId});`,
+      VALUES("${answer.fName}", "${answer.lName}", ${answer.roleId});`,
       (err, data) => {
         if (err) {
           console.log(err);
@@ -130,7 +130,7 @@ const addEmployee = () => {
     );
   });
 };
-//update a role
+// Update a role by title
 const updateRole = () => {
   prompt([
     {
@@ -155,15 +155,15 @@ const updateRole = () => {
     );
   });
 };
-
+// Delete an employee by id
 const deleteEmployee = () => {
   prompt({
     type: 'input',
-    name: 'employeeId',
+    name: 'empId',
     message: 'what is the id of an employee you want to delete?',
   }).then((answer) => {
     db.query(
-      `DELETE FROM employee WHERE id = ${answer.employeeId};`,
+      `DELETE FROM employee WHERE id = ${answer.empId};`,
       (err, data) => {
         if (err) {
           console.log(err);
@@ -174,7 +174,7 @@ const deleteEmployee = () => {
   });
 };
 
-//main menu function
+// Main menu function
 const mainMenu = () => {
   prompt({
     type: 'list',
@@ -230,4 +230,5 @@ const mainMenu = () => {
     .catch((err) => console.log(err));
 };
 
+// Initiating mainMenu
 mainMenu();
