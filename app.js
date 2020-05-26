@@ -169,20 +169,75 @@ const updateRole = () => {
     });
   });
 };
-// Delete an employee by id
+// Delete a department
+const deleteDepartment = () => {
+  db.query('SELECT * FROM department', (err, result) => {
+    if (err) throw err;
+    departments = result.map((dep) => {
+      return { name: dep.name, value: dep.id };
+    });
+    prompt({
+      type: 'list',
+      name: 'dep_id',
+      message: 'which department do you want to remove?',
+      choices: departments,
+    }).then((answer) => {
+      db.query(
+        `DELETE FROM department WHERE id = ${answer.dep_id};`,
+        (err, data) => {
+          if (err) throw err;
+          viewDepartment();
+        }
+      );
+    });
+  });
+};
+
+// Delete a role
+const deleteRole = () => {
+  db.query('SELECT * FROM role', (err, result) => {
+    if (err) throw err;
+    roles = result.map((role) => {
+      return { name: role.title, value: role.id };
+    });
+    prompt({
+      type: 'list',
+      name: 'role_id',
+      message: 'which role do you want to remove?',
+      choices: roles,
+    }).then((answer) => {
+      db.query(
+        `DELETE FROM role WHERE id = ${answer.role_id};`,
+        (err, data) => {
+          if (err) throw err;
+          viewRole();
+        }
+      );
+    });
+  });
+};
+
+// Delete an employee
 const deleteEmployee = () => {
-  prompt({
-    type: 'input',
-    name: 'empId',
-    message: 'what is the id of an employee you want to delete?',
-  }).then((answer) => {
-    db.query(
-      `DELETE FROM employee WHERE id = ${answer.empId};`,
-      (err, data) => {
-        if (err) throw err;
-        viewEmployee();
-      }
-    );
+  db.query('SELECT * FROM employee', (err, result) => {
+    if (err) throw err;
+    let emp_name = result.map((emp) => {
+      return { name: emp.first_name, value: emp.id };
+    });
+    prompt({
+      type: 'list',
+      name: 'empId',
+      message: 'which employee do you want to remove?',
+      choices: emp_name,
+    }).then((answer) => {
+      db.query(
+        `DELETE FROM employee WHERE id = ${answer.empId};`,
+        (err, data) => {
+          if (err) throw err;
+          viewEmployee();
+        }
+      );
+    });
   });
 };
 
@@ -201,6 +256,8 @@ const mainMenu = () => {
       'Add a new role',
       'Add a new employee',
       'Update employee role',
+      'Delete a department',
+      'Delete a role',
       'Delete an employee',
       'EXIT',
     ],
@@ -230,6 +287,12 @@ const mainMenu = () => {
           break;
         case 'Update employee role':
           updateRole();
+          break;
+        case 'Delete a department':
+          deleteDepartment();
+          break;
+        case 'Delete a role':
+          deleteRole();
           break;
         case 'Delete an employee':
           deleteEmployee();
