@@ -54,6 +54,7 @@ const addDepartment = () => {
     );
   });
 };
+
 // Add a new role row into db
 const addRole = () => {
   db.query('SELECT * FROM department', (err, result) => {
@@ -132,6 +133,7 @@ const addEmployee = () => {
     });
   });
 };
+
 // Update a role by title
 const updateRole = () => {
   db.query('SELECT * FROM employee', (err, result) => {
@@ -169,6 +171,7 @@ const updateRole = () => {
     });
   });
 };
+
 // Delete a department
 const deleteDepartment = () => {
   db.query('SELECT * FROM department', (err, result) => {
