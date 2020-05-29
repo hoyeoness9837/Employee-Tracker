@@ -15,6 +15,10 @@
 - Open the terminal from the file and type node app.js
 - Follow the prompts.
 
+
+## DEMO
+-![DEMO](./Assets/demo.gif)
+
 ## Github Repo
 
 - [https://github.com/hoyeoness9837/Employee-Tracker](https://github.com/hoyeoness9837/Employee-Tracker)
